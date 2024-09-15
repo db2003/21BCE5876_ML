@@ -50,7 +50,6 @@ The system uses **Redis** for caching both document embeddings and search respon
 1. **Clone the repository**:
    ```
    git clone https://github.com/your-username/21BCE5876_ML.git
-   cd your-repo-name
    ```
 
 2. **Install dependencies**:
