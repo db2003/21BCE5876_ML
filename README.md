@@ -43,10 +43,7 @@ This project is a backend for document retrieval, designed to generate context f
 
 ## Caching Strategy
 
-The system uses **Redis** for caching both document embeddings and search responses. Redis was chosen over alternatives like Memcached for the following reasons:
-- **Persistence**: Redis supports data persistence, which is important to ensure cached data survives server restarts.
-- **Advanced Data Structures**: Redis offers more than simple key-value storage, making it a versatile option for caching search results and other data.
-- **Expiration Control**: Redis allows fine-grained control over cache expiration times, which ensures optimal performance and freshness of data.
+The system uses **Redis** for caching both document embeddings and search responses. 
 
 ## Installation
 
@@ -76,11 +73,98 @@ The system uses **Redis** for caching both document embeddings and search respon
    python main.py
    ```
 
-6. **Dockerize the application**:
-   To build and run the Docker container:
+6. ## **Dockerisation**:
+<img src="https://github.com/user-attachments/assets/ae8799c9-b318-4275-8b2c-6077c0bf2ba6" width="900" height="600" alt="Docker_Tool">
+
+
+The application is fully Dockerized for easy deployment. Follow these steps to build and run the application using Docker:
+
+### Steps to Dockerize the Application
+
+1. **Create a `Dockerfile`**:
+   The Dockerfile defines the environment and dependencies required to run the application. Here's an example `Dockerfile`:
+
    ```
-   docker build -t document-retrieval .
-   docker run -p 5000:5000 document-retrieval
+   # Use Python 3.11 to avoid the python-magic-bin compatibility issue
+   FROM python:3.11-slim
+
+   # Set the working directory in the container
+   WORKDIR /app
+
+   # Copy the requirements file into the container
+     COPY requirements.txt .
+
+    # Install required Python packages
+    RUN pip install --no-cache-dir -r requirements.txt
+
+    # Install Redis server for caching
+    RUN apt-get update && apt-get install -y redis-server
+
+     # Copy the project files into the container
+    COPY . .
+
+     # Expose the port that the Flask app will run on
+     EXPOSE 5000
+
+     # Start Redis and the Flask app
+    CMD service redis-server start && python main.py
+
+   ```
+
+2. **Docker Compose Setup**:
+   If you are using **Redis** for caching, Docker Compose makes it easy to define and run the Redis service alongside the application.
+
+   Create a `docker-compose.yml` file:
+
+   ```
+    version: '3'
+   services:
+    app:
+    build: .
+    ports:
+      - "5000:5000"  # Host port 5000 -> Container port 5000
+    volumes:
+      - .:/app
+    environment:
+      - FLASK_ENV=development
+    depends_on:
+      - redis
+    command: python main.py
+
+    redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"  # Expose Redis on port 6379
+
+   ```
+
+3. **Build and Run the Docker Containers**:
+
+   To build the Docker image and start the application with Redis, use the following commands:
+
+   ```
+   docker-compose build
+   docker-compose up
+   ```
+
+   The application will now be running on `http://localhost:5000`, and Redis will be available at `localhost:6379` for caching.
+
+4. **Running the Application**:
+
+   Once the containers are up, you can access the following functionalities:
+   **We input the user_id, threshold and query in the url itself as shown below and some example images also given**
+
+   - **Health Check**: `GET http://localhost:5000/health`
+   - **Search API**: `GET http://localhost:5000/search?user_id=<user_id>&text=<search_text>&top_k=<top_k>&threshold=<threshold>`
+
+   The application logs request details and tracks user requests in the SQLite database (`api_calls.db`). If the same query is made, cached results are served to minimize inference time. 
+
+5. **Stop the Docker Containers**:
+
+   When you're done, you can stop the running containers using:
+
+   ```bash
+   docker-compose down
    ```
 
 ## Usage
@@ -121,15 +205,34 @@ The required Python packages are listed in `requirements.txt`. Key dependencies 
 
 ### Example Query:
 <img src="https://github.com/user-attachments/assets/ee6522e9-8849-43ee-9e00-4af7181b58ea" width="2200" height="200" alt="Example Query">
+Different k value:
+<img src="https://github.com/user-attachments/assets/e18d0d81-1a05-4757-b8e5-c0bd45665cfb" width="2200" height="200" alt="K Value 10">
+
+
+
 
 ### Too Many Requests by Same User:
 <img src="https://github.com/user-attachments/assets/06dd2d1c-98cb-487c-9082-3b7d6be223e6" width="2200" height="200" alt="Too Many Requests">
 <img src="https://github.com/user-attachments/assets/ed22a1b9-514a-441c-abbc-13ecdda17854" width="2200" height="200" alt="Too Many Requests">
 
-### Error 429:
-<img src="https://github.com/user-attachments/assets/af36fda0-db33-4f2a-99cf-9e68dc16fae5" width="2200" height="200" alt="Error 429">
+ **Error 429:**
+<img src="https://github.com/user-attachments/assets/783bb094-82dc-4614-988e-5bf4ac71ec1e" width="2200" height="200" alt="Too Many Requests">
+
+### Caching Example: 
+- if user13 asks for a query "give a small summary of your latest retreived article"
+
+<img src="https://github.com/user-attachments/assets/7fb59190-beca-42c0-b841-41abc5b14a6d" width="2200" height="200" alt="caching_org">
+
+- if the same query is asked by the same or other person 
+
+<img src="https://github.com/user-attachments/assets/81c65d66-115b-414a-9832-4fe57144ed42" width="2200" height="200" alt="Cachingex">
+we can see inference time is LARGELY reduced due to caching
 
 
 
+### Docker ScreenShots:
+![image](https://github.com/user-attachments/assets/c2d3993c-2c47-444d-92e8-fe893d3dff03)
 
-##DOCKERISATION STILL IN PROGRESS
+![image](https://github.com/user-attachments/assets/f047dd20-054c-43b0-8093-d4993c168d16)
+
+This setup ensures that your application is scalable, easily deployable, and leverages Docker to manage dependencies and services efficiently.
