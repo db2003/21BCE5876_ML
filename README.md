@@ -114,3 +114,22 @@ The required Python packages are listed in `requirements.txt`. Key dependencies 
 - `flask`
 - `dotenv`
 
+## Working
+
+### Health Check:
+<img src="https://github.com/user-attachments/assets/d2492ae9-0613-4c30-9953-0ef851612455" width="600" height="200" alt="Health Check">
+
+### Example Query:
+<img src="https://github.com/user-attachments/assets/ee6522e9-8849-43ee-9e00-4af7181b58ea" width="2200" height="200" alt="Example Query">
+
+### Too Many Requests by Same User:
+<img src="https://github.com/user-attachments/assets/06dd2d1c-98cb-487c-9082-3b7d6be223e6" width="2200" height="200" alt="Too Many Requests">
+<img src="https://github.com/user-attachments/assets/ed22a1b9-514a-441c-abbc-13ecdda17854" width="2200" height="200" alt="Too Many Requests">
+
+### Error 429:
+<img src="https://github.com/user-attachments/assets/af36fda0-db33-4f2a-99cf-9e68dc16fae5" width="2200" height="200" alt="Error 429">
+
+
+
+
+##DOCKERISATION STILL IN PROGRESS
