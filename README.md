@@ -209,7 +209,7 @@ The required Python packages are listed in `requirements.txt`. Key dependencies 
 ### Example Query:
 <img src="https://github.com/user-attachments/assets/ee6522e9-8849-43ee-9e00-4af7181b58ea" width="2200" height="200" alt="Example Query">
 Different k value:
-<img src="https://github.com/user-attachments/assets/e18d0d81-1a05-4757-b8e5-c0bd45665cfb" width="2200" height="200" alt="K Value 10">
+<img src="https://github.com/user-attachments/assets/e18d0d81-1a05-4757-b8e5-c0bd45665cfb" width="2300" height="200" alt="K Value 10">
 
 ### Too Many Requests by Same User:
 <img src="https://github.com/user-attachments/assets/06dd2d1c-98cb-487c-9082-3b7d6be223e6" width="2200" height="200" alt="Too Many Requests">
