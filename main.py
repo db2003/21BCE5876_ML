@@ -81,7 +81,7 @@ def search_endpoint():
     top_k = int(request.args.get('top_k', 5))
     threshold = float(request.args.get('threshold', 0.2))
 
-    answer = embedding.llm_response(query=text,topk = top_k,threshold=threshold)
+    answer = embedding.llm_response(query=text, topk=top_k, threshold=threshold)
     
     inference_time = time.time() - start_time
     logger.info(f"Request by user_id: {user_id} took {inference_time:.4f} seconds")
@@ -93,14 +93,14 @@ def search_endpoint():
     return jsonify(response)
 
 
-# Function running in different thread to do scraping of articles
+# Function running in a separate thread to do the scraping of articles
 def run_news_scraping():
     try:
         print("Scraping news...")
-        print("converting text to vector Embeddings...")
-        print("storing the embeddings in pinecone db...")
+        print("Converting text to vector embeddings...")
+        print("Storing the embeddings in Pinecone DB...")
         embedding.convert_and_store_embeddings()  
-        print("process completed")
+        print("Process completed")
         
     except Exception as e:
         logger.error(f"Error while scraping news: {e}")
@@ -112,4 +112,5 @@ if __name__ == '__main__':
     scraping_thread = threading.Thread(target=run_news_scraping, daemon=True)
     scraping_thread.start()
     
-    app.run(debug=True)
+    # Use host='0.0.0.0' to make Flask accessible from outside the container
+    app.run(host='0.0.0.0', port=5000, debug=True)
