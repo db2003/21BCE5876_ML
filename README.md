@@ -39,7 +39,7 @@ This project scrapes the latest news articles from Times of India, processes the
    ```
 
 4. **Set up Redis**:
-   Make sure Redis is installed and running on your local machine. The project connects to Redis at `localhost:6379`.
+   Make sure Redis is installed and running on your local machine. The project connects to Redis at `localhost:{your_defined_redis_port}`.
 
 5. **Set up the SQLite database**:
    The project uses an SQLite database to track API usage.
