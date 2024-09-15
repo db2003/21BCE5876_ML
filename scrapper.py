@@ -2,9 +2,8 @@ import requests
 from bs4 import BeautifulSoup
 import redis
 
-# Connect to Redis (assumes Redis is running on localhost at port 6379)
-r = redis.Redis(host='localhost', port=6379, db=0)
-
+# Connect to Redis (host should be 'redis' in the Docker environment)
+r = redis.Redis(host='redis', port=6379, db=0)
 
 # Get the top 3 latest news links from Times of India
 def get_news_links():
@@ -25,13 +24,11 @@ def get_news_links():
         link = anchor['href']
         if '/articleshow/' in link:
             links.append(url + link if link.startswith('/') else link)
-    print("urls fetched from TOI...")
+    print("URLs fetched from TOI...")
 
-    # Caching the result in Redis for 1 hour (3600 seconds), storing it as a string
+    # Caching the result in Redis for 1 hour (3600 seconds)
     r.setex(cache_key, 3600, str(links[:3]))
     return links[:3]  # Get the top 3 links
-
-
 
 
 def scrape_news_content(urls):
@@ -67,8 +64,5 @@ def scrape_news_content(urls):
         r.setex(url, cache_ttl, article_text)
         print(f"Cached content for {url}")
 
-    print("news content scraped...")
+    print("News content scraped...")
     return articles
-
-
-
