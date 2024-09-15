@@ -1,4 +1,4 @@
-# News Scraping and Embedding Project
+# News Scraping and Embedding Project for Trademarkia Assignment 
 
 This project scrapes the latest news articles from Times of India, processes the content, and converts the text into embeddings using Hugging Face models. The embeddings are stored in Pinecone for further retrieval and query-based searching. It also includes a Flask API for users to query the processed data.
 
@@ -100,3 +100,6 @@ The required Python packages can be found in `requirements.txt`. Here are some k
 - `pinecone`: For embedding storage.
 - `flask`: For the API.
 - `dotenv`: For loading environment variables.
+
+
+## DOCKERISATION STILL IN PROGRESS
