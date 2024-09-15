@@ -81,7 +81,7 @@ The application is fully Dockerized for easy deployment. Follow these steps to b
 ### Steps to Dockerize the Application
 
 1. **Create a `Dockerfile`**:
-   The Dockerfile defines the environment and dependencies required to run the application. Here's an example `Dockerfile`:
+   The Dockerfile defines the environment and dependencies required to run the application. Here's the `Dockerfile` used in this project:
 
    ```
    # Use Python 3.11 to avoid the python-magic-bin compatibility issue
@@ -111,7 +111,7 @@ The application is fully Dockerized for easy deployment. Follow these steps to b
    ```
 
 2. **Docker Compose Setup**:
-   If you are using **Redis** for caching, Docker Compose makes it easy to define and run the Redis service alongside the application.
+   This Project uses **Redis** for caching, Docker Compose makes it easy to define and run the Redis service alongside the application.
 
    Create a `docker-compose.yml` file:
 
@@ -145,6 +145,10 @@ The application is fully Dockerized for easy deployment. Follow these steps to b
    docker-compose build
    docker-compose up
    ```
+   or 
+   ```
+   docker-compose up --build
+   ```
 
    The application will now be running on `http://localhost:5000`, and Redis will be available at `localhost:6379` for caching.
 
@@ -153,16 +157,16 @@ The application is fully Dockerized for easy deployment. Follow these steps to b
    Once the containers are up, you can access the following functionalities:
    **We input the user_id, threshold and query in the url itself as shown below and some example images also given**
 
-   - **Health Check**: `GET http://localhost:5000/health`
-   - **Search API**: `GET http://localhost:5000/search?user_id=<user_id>&text=<search_text>&top_k=<top_k>&threshold=<threshold>`
+   - **Health Check**: ` http://localhost:5000/health`
+   - **Search API**: ` http://localhost:5000/search?user_id=<user_id>&text=<search_text>&top_k=<top_k>&threshold=<threshold>`
 
    The application logs request details and tracks user requests in the SQLite database (`api_calls.db`). If the same query is made, cached results are served to minimize inference time. 
 
 5. **Stop the Docker Containers**:
 
-   When you're done, you can stop the running containers using:
+   When you're done, you can stop the running containers by presing CTRL+C or using:
 
-   ```bash
+   ```
    docker-compose down
    ```
 
@@ -207,9 +211,6 @@ The required Python packages are listed in `requirements.txt`. Key dependencies 
 Different k value:
 <img src="https://github.com/user-attachments/assets/e18d0d81-1a05-4757-b8e5-c0bd45665cfb" width="2200" height="200" alt="K Value 10">
 
-
-
-
 ### Too Many Requests by Same User:
 <img src="https://github.com/user-attachments/assets/06dd2d1c-98cb-487c-9082-3b7d6be223e6" width="2200" height="200" alt="Too Many Requests">
 <img src="https://github.com/user-attachments/assets/ed22a1b9-514a-441c-abbc-13ecdda17854" width="2200" height="200" alt="Too Many Requests">
@@ -222,10 +223,10 @@ Different k value:
 
 <img src="https://github.com/user-attachments/assets/7fb59190-beca-42c0-b841-41abc5b14a6d" width="2200" height="200" alt="caching_org">
 
-- if the same query is asked by the same or other person 
+- if the same query is asked by the same or other person:
 
 <img src="https://github.com/user-attachments/assets/81c65d66-115b-414a-9832-4fe57144ed42" width="2200" height="200" alt="Cachingex">
-we can see inference time is LARGELY reduced due to caching
+- we can see inference time is LARGELY reduced due to caching.
 
 
 
