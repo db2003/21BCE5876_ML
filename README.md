@@ -1,4 +1,4 @@
-# Document Retrieval System for Chat Applications (done as online Trademarkia Assignment)
+# Document Retrieval System for Chat Applications 
 
 This project is a backend for document retrieval, designed to generate context for large language models (LLMs) during inference. It scrapes the latest news articles, converts the content into embeddings, and stores them for fast retrieval. Additionally, the system provides a cache to ensure faster responses and tracks API usage to limit excessive requests.
 
